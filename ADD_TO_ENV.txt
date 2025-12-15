@@ -1,0 +1,5 @@
+# Add these lines to your .env file
+
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin123
+

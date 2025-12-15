@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: ticket-generator
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && cd frontend && npm install && npm run build && cd ..
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: EMAIL
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false

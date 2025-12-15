@@ -1,0 +1,17 @@
+# UPDATED .env FILE
+# Copy this content to your .env file
+
+# MongoDB Atlas Connection
+MONGO_URI=mongodb+srv://usmanwaris0987:YOUR_DATABASE_PASSWORD@ticketuserc1.yjwfw78.mongodb.net/ticket-generator?retryWrites=true&w=majority
+
+# Email Settings
+EMAIL=your-email@gmail.com
+EMAIL_PASSWORD=your-16-char-app-password
+
+# Server
+PORT=5000
+
+# Admin Credentials
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin123
+

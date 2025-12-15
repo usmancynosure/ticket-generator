@@ -1,0 +1,113 @@
+================================================================================
+                    CLOUDINARY SETUP - QUICK GUIDE
+================================================================================
+
+CLOUDINARY IS FREE AND BETTER THAN FIREBASE STORAGE!
+
+✅ 25 GB storage (vs Firebase's 5 GB)
+✅ 25 GB bandwidth (vs Firebase's 1 GB/day)
+✅ No credit card needed
+✅ Free forever!
+
+================================================================================
+                        3-MINUTE SETUP
+================================================================================
+
+STEP 1: CREATE ACCOUNT
+----------------------
+Go to: https://cloudinary.com/users/register_free
+- Sign up (free!)
+- Verify email
+- Login
+
+STEP 2: GET CREDENTIALS
+-----------------------
+After login, you'll see your Dashboard with:
+
+Cloud Name:  dcxyz123                    ← Copy this
+API Key:     123456789012345             ← Copy this
+API Secret:  abcdefghijklmnop            ← Copy this
+
+STEP 3: ADD TO .env FILE
+------------------------
+Open your .env file and add these 3 lines:
+
+CLOUDINARY_CLOUD_NAME=paste-cloud-name-here
+CLOUDINARY_API_KEY=paste-api-key-here
+CLOUDINARY_API_SECRET=paste-api-secret-here
+
+STEP 4: RESTART BACKEND
+-----------------------
+In backend terminal:
+1. Press Ctrl+C (stop)
+2. Type: npm run dev
+3. You should see: ✅ Cloudinary configured successfully
+
+STEP 5: TEST IT
+--------------
+1. Go to: http://localhost:5173
+2. Submit ticket with payment proof image
+3. Go to: http://localhost:5173/admin
+4. Login and view ticket
+5. Payment proof image will show!
+
+================================================================================
+                        WHAT HAPPENS NOW
+================================================================================
+
+USER UPLOADS IMAGE → Cloudinary Cloud → URL Saved in Firebase → Admin Sees Image
+
+✅ Images stored in cloud (not your computer)
+✅ Fast loading from CDN
+✅ Images never lost
+✅ Admin can view all images
+✅ FREE!
+
+================================================================================
+                        VIEW YOUR IMAGES
+================================================================================
+
+Go to: https://console.cloudinary.com
+Click: "Media Library"
+→ See all uploaded payment proofs!
+
+You can also:
+- Delete images
+- Download images
+- Get image URLs
+- See usage statistics
+
+================================================================================
+                        YOUR .env FILE
+================================================================================
+
+After adding Cloudinary, your .env should have:
+
+FIREBASE_PROJECT_ID=ticket-generator-eaf07
+FIREBASE_PRIVATE_KEY_ID=...
+FIREBASE_PRIVATE_KEY="..."
+FIREBASE_CLIENT_EMAIL=...
+FIREBASE_CLIENT_ID=...
+FIREBASE_CERT_URL=...
+
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+EMAIL=your-email@gmail.com
+EMAIL_PASSWORD=your-app-password
+
+PORT=5000
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin123
+
+================================================================================
+
+CODE IS ALREADY UPDATED! ✅
+
+Just add Cloudinary credentials to .env and restart backend!
+
+See full guide: CLOUDINARY_SETUP.md
+
+================================================================================
+
