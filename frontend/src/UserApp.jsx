@@ -290,6 +290,48 @@ function UserApp() {
             <p className="text-sm text-gray-400 mt-2">📧 Ticket will be emailed after admin approval</p>
           </div>
 
+          {/* Payment Details Section */}
+          <div className="bg-gradient-to-r from-yellow-500/20 via-yellow-600/10 to-yellow-500/20 border-2 border-yellow-500 p-6 sm:p-8 rounded-2xl shadow-2xl mb-8 animate-pulse-border">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-2">💳 Payment Details</h3>
+              <p className="text-sm sm:text-base text-gray-300">Transfer Rs. 3500 to the account below</p>
+            </div>
+            
+            <div className="bg-black/50 rounded-xl p-6 border border-yellow-500/30">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Account Title */}
+                <div className="bg-gradient-to-br from-yellow-500/10 to-transparent p-4 rounded-lg border border-yellow-500/20">
+                  <p className="text-xs text-gray-400 mb-1">Account Title</p>
+                  <p className="text-lg sm:text-xl font-bold text-white">HASNAIN ABBASI</p>
+                </div>
+                
+                {/* Bank Name */}
+                <div className="bg-gradient-to-br from-yellow-500/10 to-transparent p-4 rounded-lg border border-yellow-500/20">
+                  <p className="text-xs text-gray-400 mb-1">Bank Name</p>
+                  <p className="text-lg sm:text-xl font-bold text-white">Bank Alfalah</p>
+                </div>
+                
+                {/* Account Number */}
+                <div className="bg-gradient-to-br from-yellow-500/10 to-transparent p-4 rounded-lg border border-yellow-500/20">
+                  <p className="text-xs text-gray-400 mb-1">Account Number</p>
+                  <p className="text-base sm:text-lg font-mono text-yellow-400">01461010365934</p>
+                </div>
+                
+                {/* IBAN */}
+                <div className="bg-gradient-to-br from-yellow-500/10 to-transparent p-4 rounded-lg border border-yellow-500/20">
+                  <p className="text-xs text-gray-400 mb-1">IBAN</p>
+                  <p className="text-sm sm:text-base font-mono text-yellow-400 break-all">PK29ALFH0146001010365934</p>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-yellow-500/10 rounded-lg border border-yellow-500/30">
+                <p className="text-sm text-center text-gray-300">
+                  ⚠️ <span className="font-semibold text-yellow-400">Important:</span> After payment, upload your payment screenshot below
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-gradient-to-b from-yellow-500/10 to-black border-2 border-yellow-500/50 p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl">
             <form onSubmit={submit} className="space-y-5">
               <div>
