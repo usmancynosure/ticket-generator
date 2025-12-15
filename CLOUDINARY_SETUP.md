@@ -198,3 +198,4 @@ ADMIN_PASSWORD=admin123
 
 **Setup takes 5 minutes and it's free forever!** 🎉
 
+

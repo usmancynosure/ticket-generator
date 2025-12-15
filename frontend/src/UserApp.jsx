@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "./config";
 
@@ -14,6 +14,24 @@ function UserApp() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [slots, setSlots] = useState({ availableSlots: 0, totalSlots: 100, isFull: false });
+
+  // Fetch available slots on component mount
+  const fetchSlots = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/tickets/slots`);
+      setSlots(response.data);
+    } catch (err) {
+      console.error("Failed to fetch slots:", err);
+    }
+  };
+
+  // Fetch slots on mount and every 30 seconds
+  useEffect(() => {
+    fetchSlots();
+    const interval = setInterval(fetchSlots, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,8 +56,20 @@ function UserApp() {
   const submit = async (e) => {
     e.preventDefault();
     
+    // Check if slots are full
+    if (slots.isFull) {
+      setError("Sorry! All tickets are sold out.");
+      return;
+    }
+    
     if (!form.name || !form.regNo || !form.batch || !form.email || !form.phone) {
       setError("All fields are required!");
+      return;
+    }
+
+    // Payment proof is now REQUIRED
+    if (!form.payment) {
+      setError("Payment proof image is required! Please upload your payment screenshot.");
       return;
     }
 
@@ -66,9 +96,7 @@ function UserApp() {
       data.append("batch", form.batch);
       data.append("email", form.email);
       data.append("phone", form.phone);
-      if (form.payment) {
-        data.append("payment", form.payment);
-      }
+      data.append("payment", form.payment);
 
       const response = await axios.post(`${API_BASE_URL}/submit`, data, {
         headers: {
@@ -88,6 +116,9 @@ function UserApp() {
       
       const fileInput = document.getElementById("payment-input");
       if (fileInput) fileInput.value = "";
+      
+      // Refresh slot count after submission
+      fetchSlots();
 
     } catch (err) {
       setError(
@@ -290,6 +321,53 @@ function UserApp() {
             <p className="text-sm text-gray-400 mt-2">📧 Ticket will be emailed after admin approval</p>
           </div>
 
+          {/* Slots Availability Section */}
+          <div className={`mb-8 p-6 rounded-2xl border-2 ${
+            slots.isFull 
+              ? 'bg-red-900/20 border-red-500' 
+              : slots.availableSlots <= 10 
+                ? 'bg-orange-900/20 border-orange-500 animate-pulse' 
+                : 'bg-green-900/20 border-green-500'
+          }`}>
+            <div className="text-center">
+              {slots.isFull ? (
+                <>
+                  <div className="text-5xl mb-3">🚫</div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-red-400 mb-2">SOLD OUT!</h3>
+                  <p className="text-gray-300">All {slots.totalSlots} tickets have been sold</p>
+                </>
+              ) : (
+                <>
+                  <div className="text-5xl mb-3">🎟️</div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-2">
+                    {slots.availableSlots} Slots Available
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-300 mb-4">
+                    Out of {slots.totalSlots} total tickets
+                  </p>
+                  
+                  {/* Progress Bar */}
+                  <div className="max-w-md mx-auto bg-gray-800 rounded-full h-4 overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-500 ${
+                        slots.availableSlots <= 10 
+                          ? 'bg-gradient-to-r from-orange-500 to-red-500' 
+                          : 'bg-gradient-to-r from-green-500 to-yellow-500'
+                      }`}
+                      style={{ width: `${(slots.availableSlots / slots.totalSlots) * 100}%` }}
+                    ></div>
+                  </div>
+                  
+                  {slots.availableSlots <= 10 && (
+                    <p className="text-orange-400 font-bold mt-3 text-sm sm:text-base animate-pulse">
+                      ⚠️ Hurry! Only {slots.availableSlots} tickets left!
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
           {/* Payment Details Section */}
           <div className="bg-gradient-to-r from-yellow-500/20 via-yellow-600/10 to-yellow-500/20 border-2 border-yellow-500 p-6 sm:p-8 rounded-2xl shadow-2xl mb-8 animate-pulse-border">
             <div className="text-center mb-6">
@@ -412,16 +490,21 @@ function UserApp() {
 
               <div>
                 <label className="block text-sm font-semibold mb-2 text-yellow-400">
-                  Payment Proof <span className="text-gray-400">(Optional)</span>
+                  Payment Proof <span className="text-red-400">*</span>
                 </label>
+                <p className="text-xs text-gray-400 mb-2">Upload screenshot of your payment transfer</p>
                 <input
                   id="payment-input"
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
                   className="w-full px-4 py-3 bg-white text-black rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-yellow-500 file:text-black file:cursor-pointer hover:file:bg-yellow-400 file:text-sm file:font-semibold"
-                  disabled={loading}
+                  disabled={loading || slots.isFull}
+                  required
                 />
+                {form.payment && (
+                  <p className="text-green-400 text-sm mt-2">✓ File selected: {form.payment.name}</p>
+                )}
               </div>
 
               {error && (
@@ -442,7 +525,7 @@ function UserApp() {
               <button
                 type="submit"
                 className="w-full bg-yellow-500 text-black py-4 rounded-lg text-lg font-bold hover:bg-yellow-400 transition disabled:bg-gray-500 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
-                disabled={loading}
+                disabled={loading || slots.isFull}
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
@@ -452,7 +535,7 @@ function UserApp() {
                     </svg>
                     Submitting...
                   </span>
-                ) : "Submit for Verification"}
+                ) : slots.isFull ? "SOLD OUT - No Slots Available" : "Submit for Verification"}
               </button>
             </form>
 

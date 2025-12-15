@@ -22,28 +22,29 @@ module.exports = async (email, filePath) => {
     sendSmtpEmail.to = [{ email: email }];
     sendSmtpEmail.subject = "🎉 Your Farewell Eve '25 Ticket - LIVE QAWALI & CONCERT";
     sendSmtpEmail.htmlContent = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #000000; color: #FFFFFF;">
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 650px; margin: 0 auto; background-color: #000000; border: 3px solid #FFD700;">
           <!-- Header -->
-          <div style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); padding: 40px 30px; text-align: center; border-top: 4px solid #FFD700;">
-            <h1 style="margin: 0; color: #FFFFFF; font-size: 36px; font-style: italic; margin-bottom: 10px;">
+          <div style="background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%); padding: 50px 30px; text-align: center; border-bottom: 5px solid #FFD700; position: relative;">
+            <div style="width: 60px; height: 60px; background-color: #FFD700; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 30px;">🎉</div>
+            <h1 style="margin: 0; color: #FFD700; font-size: 42px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
               Farewell Eve '25
             </h1>
-            <p style="color: #FFD700; font-size: 14px; font-style: italic; margin: 10px 0;">
+            <p style="color: #FFFFFF; font-size: 15px; font-style: italic; margin: 15px 0; opacity: 0.9;">
               with grateful hearts, we bid farewell & welcome new beginnings
             </p>
-            <h2 style="color: #FFFFFF; font-size: 24px; margin-top: 20px; font-weight: bold;">
+            <div style="display: inline-block; background-color: #FFD700; color: #000000; padding: 12px 30px; border-radius: 25px; margin-top: 15px; font-weight: bold; font-size: 18px;">
               LIVE QAWALI & CONCERT
-            </h2>
+            </div>
           </div>
 
           <!-- Success Message -->
-          <div style="background-color: #1a1a1a; padding: 30px; text-align: center; border-left: 4px solid #FFD700;">
-            <h2 style="color: #FFD700; margin-top: 0; font-size: 28px;">🎊 Congratulations!</h2>
-            <p style="color: #FFFFFF; font-size: 18px; line-height: 1.6;">
-              Your ticket has been successfully generated!
+          <div style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); padding: 40px 30px; text-align: center;">
+            <h2 style="color: #000000; margin: 0; font-size: 32px; font-weight: bold;">✅ TICKET APPROVED!</h2>
+            <p style="color: #1a1a1a; font-size: 18px; margin: 15px 0; font-weight: 500;">
+              Your entry to Farewell Eve 2025 is confirmed!
             </p>
-            <p style="color: #CCCCCC; font-size: 16px;">
-              Your official entry ticket is attached to this email.
+            <p style="color: #333333; font-size: 15px; margin: 5px 0;">
+              Your official ticket is attached as a PDF below
             </p>
           </div>
 
@@ -138,11 +139,21 @@ module.exports = async (email, filePath) => {
           </div>
 
           <!-- Footer -->
-          <div style="background-color: #000000; padding: 25px; text-align: center; border-top: 2px solid #FFD700;">
-            <p style="color: #FFD700; font-size: 18px; font-weight: bold; margin: 0;">
-              See you at the event! 🎉
+          <div style="background-color: #1a1a1a; padding: 30px; text-align: center; border-top: 5px solid #FFD700;">
+            <p style="color: #FFD700; font-size: 24px; font-weight: bold; margin: 0 0 10px 0;">
+              🎊 See You at Farewell Eve 2025! 🎊
             </p>
-            <p style="color: #888888; font-size: 12px; margin-top: 15px;">
+            <p style="color: #FFFFFF; font-size: 14px; margin: 10px 0;">
+              Bring this ticket and your student ID card
+            </p>
+            <div style="background-color: #000000; border: 2px solid #FFD700; border-radius: 10px; padding: 20px; margin: 20px 0;">
+              <p style="color: #FFD700; font-size: 13px; font-weight: bold; margin: 0 0 5px 0;">Need Help?</p>
+              <p style="color: #CCCCCC; font-size: 11px; margin: 0; line-height: 1.6;">
+                Hasnain: 0306-5789045 • Zarnish: 0340-4555553<br>
+                M Asad: 0301-6996105 • Usman: 0320-0787777
+              </p>
+            </div>
+            <p style="color: #888888; font-size: 11px; margin: 15px 0 0 0;">
               © 2025 Farewell Eve. All rights reserved.
             </p>
           </div>
