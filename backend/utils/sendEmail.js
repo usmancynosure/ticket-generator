@@ -21,7 +21,7 @@ module.exports = async (email, filePath) => {
     };
     sendSmtpEmail.to = [{ email: email }];
     sendSmtpEmail.subject = "🎉 Your Farewell Eve '25 Ticket - LIVE QAWALI & CONCERT";
-      html: `
+    sendSmtpEmail.htmlContent = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #000000; color: #FFFFFF;">
           <!-- Header -->
           <div style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); padding: 40px 30px; text-align: center; border-top: 4px solid #FFD700;">
