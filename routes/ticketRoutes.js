@@ -21,38 +21,10 @@ const upload = multer({
   }
 });
 
-// Get available slots endpoint
-router.get("/slots", async (req, res) => {
-  try {
-    const MAX_SLOTS = parseInt(process.env.MAX_SLOTS) || 100; // Default 100 slots
-    const approvedCount = await Ticket.countDocuments({ status: 'approved' });
-    const availableSlots = Math.max(0, MAX_SLOTS - approvedCount);
-    
-    res.json({
-      totalSlots: MAX_SLOTS,
-      approvedTickets: approvedCount,
-      availableSlots: availableSlots,
-      isFull: availableSlots === 0
-    });
-  } catch (error) {
-    console.error("Error fetching slots:", error);
-    res.status(500).json({ error: "Failed to fetch slot information" });
-  }
-});
-
 // Submit ticket request
 router.post("/submit", upload.single("payment"), async (req, res) => {
   try {
     const { name, regNo, batch, email, phone } = req.body;
-
-    // Check available slots
-    const MAX_SLOTS = parseInt(process.env.MAX_SLOTS) || 100;
-    const approvedCount = await Ticket.countDocuments({ status: 'approved' });
-    if (approvedCount >= MAX_SLOTS) {
-      return res.status(400).json({ 
-        error: "Sorry! All tickets are sold out. No slots available." 
-      });
-    }
 
     // Validation
     if (!name || !regNo || !batch || !email || !phone) {
