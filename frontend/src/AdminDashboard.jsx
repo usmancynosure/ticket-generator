@@ -177,6 +177,7 @@ function AdminDashboard({ onLogout }) {
                 <div className="space-y-2 text-sm">
                   <p><span className="text-gray-400">Batch:</span> {ticket.batch}</p>
                   <p><span className="text-gray-400">Email:</span> {ticket.email}</p>
+                  <p><span className="text-gray-400">Phone:</span> {ticket.phone || 'N/A'}</p>
                   <p><span className="text-gray-400">Submitted:</span> {new Date(ticket.createdAt).toLocaleString()}</p>
                 </div>
                 {ticket.status === "pending" && (

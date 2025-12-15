@@ -7,6 +7,7 @@ class Ticket {
     this.regNo = data.regNo;
     this.batch = data.batch;
     this.email = data.email;
+    this.phone = data.phone || '';
     this.paymentImage = data.paymentImage || null;
     this.status = data.status || 'pending';
     this.createdAt = data.createdAt || new Date();
@@ -23,6 +24,7 @@ class Ticket {
         regNo: ticket.regNo,
         batch: ticket.batch,
         email: ticket.email,
+        phone: ticket.phone,
         paymentImage: ticket.paymentImage,
         status: ticket.status,
         createdAt: ticket.createdAt
@@ -131,6 +133,7 @@ class Ticket {
           regNo: this.regNo,
           batch: this.batch,
           email: this.email,
+          phone: this.phone,
           paymentImage: this.paymentImage,
           status: this.status,
           createdAt: this.createdAt
@@ -142,6 +145,7 @@ class Ticket {
           regNo: this.regNo,
           batch: this.batch,
           email: this.email,
+          phone: this.phone,
           paymentImage: this.paymentImage,
           status: this.status,
           createdAt: this.createdAt

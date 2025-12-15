@@ -8,6 +8,7 @@ function UserApp() {
     regNo: "",
     batch: "",
     email: "",
+    phone: "",
     payment: null,
   });
   const [loading, setLoading] = useState(false);
@@ -37,7 +38,7 @@ function UserApp() {
   const submit = async (e) => {
     e.preventDefault();
     
-    if (!form.name || !form.regNo || !form.batch || !form.email) {
+    if (!form.name || !form.regNo || !form.batch || !form.email || !form.phone) {
       setError("All fields are required!");
       return;
     }
@@ -45,6 +46,12 @@ function UserApp() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
       setError("Please enter a valid email address!");
+      return;
+    }
+
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+    if (!phoneRegex.test(form.phone) || form.phone.length < 10) {
+      setError("Please enter a valid phone number (at least 10 digits)!");
       return;
     }
 
@@ -58,6 +65,7 @@ function UserApp() {
       data.append("regNo", form.regNo);
       data.append("batch", form.batch);
       data.append("email", form.email);
+      data.append("phone", form.phone);
       if (form.payment) {
         data.append("payment", form.payment);
       }
@@ -74,6 +82,7 @@ function UserApp() {
         regNo: "",
         batch: "",
         email: "",
+        phone: "",
         payment: null,
       });
       
@@ -342,6 +351,21 @@ function UserApp() {
                   disabled={loading}
                 />
                 <p className="text-xs text-gray-400 mt-1">Ticket will be sent here after approval</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-yellow-400">
+                  Phone Number <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleInputChange}
+                  placeholder="03xx-xxxxxxx"
+                  className="w-full px-4 py-3 bg-white text-black rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none transition"
+                  disabled={loading}
+                />
               </div>
 
               <div>

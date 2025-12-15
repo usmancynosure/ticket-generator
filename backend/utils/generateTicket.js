@@ -134,6 +134,15 @@ module.exports = (ticket) => {
      .fillColor("#333333")
      .text(ticket.email, 200, yPos, { width: 300 });
 
+  // Phone
+  yPos += lineHeight;
+  doc.font("Helvetica-Bold")
+     .fillColor("#000000")
+     .text("Phone:", 70, yPos);
+  doc.font("Helvetica")
+     .fillColor("#333333")
+     .text(ticket.phone || 'N/A', 200, yPos);
+
   // Ticket ID
   yPos += lineHeight;
   doc.font("Helvetica-Bold")

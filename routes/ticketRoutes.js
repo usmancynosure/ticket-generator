@@ -24,10 +24,10 @@ const upload = multer({
 // Submit ticket request
 router.post("/submit", upload.single("payment"), async (req, res) => {
   try {
-    const { name, regNo, batch, email } = req.body;
+    const { name, regNo, batch, email, phone } = req.body;
 
     // Validation
-    if (!name || !regNo || !batch || !email) {
+    if (!name || !regNo || !batch || !email || !phone) {
       return res.status(400).json({ error: "All fields are required!" });
     }
 
@@ -35,6 +35,12 @@ router.post("/submit", upload.single("payment"), async (req, res) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: "Invalid email format!" });
+    }
+
+    // Phone validation
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+    if (!phoneRegex.test(phone) || phone.length < 10) {
+      return res.status(400).json({ error: "Invalid phone number format!" });
     }
 
     let paymentImageUrl = null;
@@ -72,6 +78,7 @@ router.post("/submit", upload.single("payment"), async (req, res) => {
       regNo,
       batch,
       email,
+      phone,
       paymentImage: paymentImageUrl,
       status: "pending",
     });
