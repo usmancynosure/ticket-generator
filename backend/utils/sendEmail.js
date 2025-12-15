@@ -1,19 +1,26 @@
 // utils/sendEmail.js
-const sgMail = require('@sendgrid/mail');
+const brevo = require('@getbrevo/brevo');
 const fs = require('fs');
 
 module.exports = async (email, filePath) => {
   try {
-    // Initialize SendGrid with API key
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    // Initialize Brevo API
+    const apiInstance = new brevo.TransactionalEmailsApi();
+    apiInstance.setApiKey(
+      brevo.TransactionalEmailsApiApiKeys.apiKey,
+      process.env.BREVO_API_KEY
+    );
 
     // Read the PDF file and convert to base64
     const pdfContent = fs.readFileSync(filePath).toString('base64');
 
-    const msg = {
-      to: email,
-      from: process.env.SENDGRID_FROM_EMAIL || 'warisusman073@gmail.com',
-      subject: "🎉 Your Farewell Eve '25 Ticket - LIVE QAWALI & CONCERT",
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.sender = {
+      name: "Farewell Eve 2025",
+      email: process.env.BREVO_FROM_EMAIL || 'warisusman073@gmail.com'
+    };
+    sendSmtpEmail.to = [{ email: email }];
+    sendSmtpEmail.subject = "🎉 Your Farewell Eve '25 Ticket - LIVE QAWALI & CONCERT";
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #000000; color: #FFFFFF;">
           <!-- Header -->
@@ -141,22 +148,19 @@ module.exports = async (email, filePath) => {
           </div>
         </div>
       `,
-      attachments: [
-        {
-          content: pdfContent,
-          filename: "Farewell-Eve-2025-Ticket.pdf",
-          type: "application/pdf",
-          disposition: "attachment"
-        }
-      ]
-    };
+    sendSmtpEmail.attachment = [
+      {
+        content: pdfContent,
+        name: "Farewell-Eve-2025-Ticket.pdf"
+      }
+    ];
 
-    await sgMail.send(msg);
-    console.log(`✅ Email sent successfully to ${email} via SendGrid`);
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(`✅ Email sent successfully to ${email} via Brevo`);
   } catch (error) {
     console.error("❌ Email sending failed:", error);
-    if (error.response) {
-      console.error("SendGrid error details:", error.response.body);
+    if (error.response && error.response.body) {
+      console.error("Brevo error details:", error.response.body);
     }
     throw new Error("Failed to send email: " + error.message);
   }
