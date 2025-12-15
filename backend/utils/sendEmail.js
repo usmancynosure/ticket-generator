@@ -1,19 +1,18 @@
 // utils/sendEmail.js
-const nodemailer = require("nodemailer");
+const sgMail = require('@sendgrid/mail');
+const fs = require('fs');
 
 module.exports = async (email, filePath) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD
-      }
-    });
+    // Initialize SendGrid with API key
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-    const mailOptions = {
-      from: `"Farewell Eve 2025" <${process.env.EMAIL}>`,
+    // Read the PDF file and convert to base64
+    const pdfContent = fs.readFileSync(filePath).toString('base64');
+
+    const msg = {
       to: email,
+      from: process.env.SENDGRID_FROM_EMAIL || 'warisusman073@gmail.com',
       subject: "🎉 Your Farewell Eve '25 Ticket - LIVE QAWALI & CONCERT",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #000000; color: #FFFFFF;">
@@ -144,16 +143,21 @@ module.exports = async (email, filePath) => {
       `,
       attachments: [
         {
+          content: pdfContent,
           filename: "Farewell-Eve-2025-Ticket.pdf",
-          path: filePath
+          type: "application/pdf",
+          disposition: "attachment"
         }
       ]
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent successfully to ${email}`);
+    await sgMail.send(msg);
+    console.log(`✅ Email sent successfully to ${email} via SendGrid`);
   } catch (error) {
     console.error("❌ Email sending failed:", error);
+    if (error.response) {
+      console.error("SendGrid error details:", error.response.body);
+    }
     throw new Error("Failed to send email: " + error.message);
   }
 };

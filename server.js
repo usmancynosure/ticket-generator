@@ -50,11 +50,29 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 
 // Serve static files from frontend build in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'frontend/dist')));
+  const frontendPath = path.join(__dirname, 'frontend/dist');
   
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/dist/index.html'));
-  });
+  // Check if frontend build exists
+  if (fs.existsSync(frontendPath)) {
+    app.use(express.static(frontendPath));
+    
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(frontendPath, 'index.html'));
+    });
+  } else {
+    // Fallback if frontend build doesn't exist
+    app.get('*', (req, res) => {
+      res.json({ 
+        message: "Ticket Generator API",
+        status: "Frontend build not found. API is working.",
+        endpoints: {
+          userSubmit: "POST /api/submit",
+          adminLogin: "POST /api/admin/login",
+          adminTickets: "GET /api/admin/tickets"
+        }
+      });
+    });
+  }
 }
 
 // Error handling middleware
