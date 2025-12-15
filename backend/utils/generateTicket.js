@@ -1,4 +1,4 @@
-// utils/generateTicket.js - Enhanced Design
+// utils/generateTicket.js - Fixed Professional Design (No Emoji Issues)
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
@@ -18,207 +18,239 @@ module.exports = (ticket) => {
 
   doc.pipe(fs.createWriteStream(filePath));
 
-  // **Header Section** - Black with gold accents
-  doc.rect(0, 0, doc.page.width, 200).fill("#000000");
+  // **HEADER SECTION** - Black with gold border
+  doc.rect(0, 0, doc.page.width, 180).fill("#000000");
+  
+  // Top gold border (thick)
+  doc.rect(0, 0, doc.page.width, 8).fill("#FFD700");
 
-  // Top gold border
-  doc.rect(0, 0, doc.page.width, 5).fill("#FFD700");
+  // Gold side borders
+  doc.rect(0, 0, 8, 180).fill("#FFD700");
+  doc.rect(doc.page.width - 8, 0, 8, 180).fill("#FFD700");
 
-  // Event Title - Large and Bold
-  doc.fillColor("#FFFFFF")
-     .fontSize(48)
+  // Event Title - Large centered
+  doc.fillColor("#FFD700")
+     .fontSize(52)
      .font("Helvetica-Bold")
-     .text("Farewell Eve '25", 0, 50, { align: "center", width: doc.page.width });
+     .text("Farewell Eve '25", 0, 45, { align: "center", width: doc.page.width });
 
-  // Tagline
-  doc.fontSize(13)
+  // Tagline - Italic style
+  doc.fontSize(12)
      .font("Helvetica-Oblique")
-     .fillColor("#FFD700")
+     .fillColor("#FFFFFF")
      .text("with grateful hearts, we bid farewell & welcome new beginnings", 0, 110, { 
        align: "center", 
        width: doc.page.width 
      });
 
-  // Event Type - Bold Banner
-  doc.fontSize(22)
-     .font("Helvetica-Bold")
-     .fillColor("#FFFFFF")
-     .text("LIVE QAWALI & CONCERT", 0, 145, { align: "center", width: doc.page.width });
-
-  // Decorative line under header
-  doc.rect(80, 195, doc.page.width - 160, 3).fill("#FFD700");
-
-  // **Event Details Section**
-  let yPos = 220;
+  // Event Type Badge
+  doc.rect(doc.page.width / 2 - 120, 140, 240, 32)
+     .fill("#FFD700");
   
-  // Gold title bar
-  doc.rect(50, yPos, doc.page.width - 100, 50)
+  doc.fontSize(16)
+     .font("Helvetica-Bold")
+     .fillColor("#000000")
+     .text("LIVE QAWALI & CONCERT", 0, 148, { align: "center", width: doc.page.width });
+
+  // Decorative bottom border
+  doc.rect(0, 172, doc.page.width, 8).fill("#FFD700");
+
+  // **EVENT DETAILS SECTION**
+  let yPos = 210;
+  
+  // Gold header bar
+  doc.rect(40, yPos, doc.page.width - 80, 45)
      .fill("#FFD700");
   
   doc.fillColor("#000000")
-     .fontSize(20)
+     .fontSize(22)
      .font("Helvetica-Bold")
-     .text("EVENT DETAILS", 0, yPos + 15, { align: "center", width: doc.page.width });
+     .text("EVENT DETAILS", 0, yPos + 12, { align: "center", width: doc.page.width });
 
-  // White background box for details
-  yPos += 50;
-  doc.rect(50, yPos, doc.page.width - 100, 150)
+  // White content box with gold border
+  yPos += 45;
+  doc.rect(40, yPos, doc.page.width - 80, 140)
      .lineWidth(3)
      .strokeColor("#FFD700")
      .fillAndStroke("#FFFFFF", "#FFD700");
 
-  yPos += 25;
+  yPos += 20;
+  const leftMargin = 60;
+  const valueMargin = 190;
 
   // Date & Time
   doc.fillColor("#000000")
-     .fontSize(14)
-     .font("Helvetica-Bold")
-     .text("📅 Date & Time:", 70, yPos);
-  doc.font("Helvetica")
-     .fillColor("#333333")
      .fontSize(13)
-     .text("FRIDAY, 19 DEC 2025 AT 6:00 PM", 220, yPos);
+     .font("Helvetica-Bold")
+     .text("Date & Time:", leftMargin, yPos);
+  doc.font("Helvetica")
+     .fillColor("#1a1a1a")
+     .fontSize(12)
+     .text("FRIDAY, 19 DEC 2025 AT 6:00 PM", valueMargin, yPos);
 
   yPos += 35;
 
   // Venue
   doc.font("Helvetica-Bold")
      .fillColor("#000000")
-     .fontSize(14)
-     .text("📍 Venue:", 70, yPos);
-  doc.font("Helvetica")
-     .fillColor("#333333")
      .fontSize(13)
-     .text("Avior Marquee, Gulberg Greens, Islamabad", 220, yPos, { width: 270 });
+     .text("Venue:", leftMargin, yPos);
+  doc.font("Helvetica")
+     .fillColor("#1a1a1a")
+     .fontSize(12)
+     .text("Avior Marquee, Gulberg Greens, Islamabad", valueMargin, yPos, { width: 300 });
 
   yPos += 45;
 
   // Entry Fee - Highlighted
   doc.font("Helvetica-Bold")
      .fillColor("#000000")
-     .fontSize(14)
-     .text("💰 Entry Fee:", 70, yPos);
+     .fontSize(13)
+     .text("Entry Fee:", leftMargin, yPos);
   doc.font("Helvetica-Bold")
      .fillColor("#D4AF37")
      .fontSize(20)
-     .text("Rs. 3500", 220, yPos - 3);
+     .text("Rs. 3500", valueMargin, yPos - 3);
 
-  // **Ticket Holder Information**
+  // **TICKET HOLDER SECTION**
   yPos = 430;
   
-  // Gold title bar
-  doc.rect(50, yPos, doc.page.width - 100, 50)
-     .fill("#000000");
+  // Black header bar with gold text
+  doc.rect(40, yPos, doc.page.width - 80, 45)
+     .lineWidth(3)
+     .strokeColor("#FFD700")
+     .fillAndStroke("#000000", "#FFD700");
   
-  doc.rect(50, yPos, doc.page.width - 100, 50)
-     .lineWidth(3)
-     .strokeColor("#FFD700")
-     .stroke();
-
   doc.fillColor("#FFD700")
-     .fontSize(20)
+     .fontSize(22)
      .font("Helvetica-Bold")
-     .text("TICKET HOLDER", 0, yPos + 15, { align: "center", width: doc.page.width });
+     .text("TICKET HOLDER", 0, yPos + 12, { align: "center", width: doc.page.width });
 
-  // White background for ticket holder details
-  yPos += 50;
-  doc.rect(50, yPos, doc.page.width - 100, 170)
+  // White content box with gold border
+  yPos += 45;
+  doc.rect(40, yPos, doc.page.width - 80, 180)
      .lineWidth(3)
      .strokeColor("#FFD700")
-     .fillAndStroke("#F9F9F9", "#FFD700");
+     .fillAndStroke("#F5F5F5", "#FFD700");
 
   yPos += 20;
-  const lineHeight = 28;
+  const lineSpacing = 30;
 
   // Name
   doc.fillColor("#000000")
-     .fontSize(12)
+     .fontSize(11)
      .font("Helvetica-Bold")
-     .text("Name:", 70, yPos);
-  doc.font("Helvetica")
-     .fillColor("#1a1a1a")
-     .fontSize(12)
-     .text(ticket.name, 220, yPos, { width: 300 });
-
-  // Registration Number
-  yPos += lineHeight;
-  doc.font("Helvetica-Bold")
-     .fillColor("#000000")
-     .text("Registration No:", 70, yPos);
-  doc.font("Helvetica")
-     .fillColor("#1a1a1a")
-     .text(ticket.regNo.toUpperCase(), 220, yPos);
-
-  // Batch
-  yPos += lineHeight;
-  doc.font("Helvetica-Bold")
-     .fillColor("#000000")
-     .text("Batch:", 70, yPos);
-  doc.font("Helvetica")
-     .fillColor("#1a1a1a")
-     .text(ticket.batch, 220, yPos);
-
-  // Email
-  yPos += lineHeight;
-  doc.font("Helvetica-Bold")
-     .fillColor("#000000")
-     .text("Email:", 70, yPos);
+     .text("Name:", leftMargin, yPos);
   doc.font("Helvetica")
      .fillColor("#1a1a1a")
      .fontSize(11)
-     .text(ticket.email, 220, yPos, { width: 300 });
+     .text(ticket.name.toUpperCase(), valueMargin, yPos, { width: 300 });
 
-  // Phone
-  yPos += lineHeight;
+  // Registration Number
+  yPos += lineSpacing;
   doc.font("Helvetica-Bold")
      .fillColor("#000000")
-     .fontSize(12)
-     .text("Phone:", 70, yPos);
+     .text("Registration No:", leftMargin, yPos);
   doc.font("Helvetica")
      .fillColor("#1a1a1a")
-     .text(ticket.phone || 'N/A', 220, yPos);
+     .text(ticket.regNo.toUpperCase(), valueMargin, yPos);
 
-  // Ticket ID (small)
-  yPos += lineHeight;
+  // Batch
+  yPos += lineSpacing;
+  doc.font("Helvetica-Bold")
+     .fillColor("#000000")
+     .text("Batch:", leftMargin, yPos);
   doc.font("Helvetica")
-     .fillColor("#999999")
+     .fillColor("#1a1a1a")
+     .text(ticket.batch, valueMargin, yPos);
+
+  // Email
+  yPos += lineSpacing;
+  doc.font("Helvetica-Bold")
+     .fillColor("#000000")
+     .text("Email:", leftMargin, yPos);
+  doc.font("Helvetica")
+     .fillColor("#1a1a1a")
+     .fontSize(10)
+     .text(ticket.email.toLowerCase(), valueMargin, yPos, { width: 300 });
+
+  // Phone
+  yPos += lineSpacing;
+  doc.font("Helvetica-Bold")
+     .fillColor("#000000")
+     .fontSize(11)
+     .text("Phone:", leftMargin, yPos);
+  doc.font("Helvetica")
+     .fillColor("#1a1a1a")
+     .text(ticket.phone || 'N/A', valueMargin, yPos);
+
+  // Ticket ID (small, at bottom of box)
+  yPos += lineSpacing;
+  doc.font("Helvetica")
+     .fillColor("#888888")
      .fontSize(8)
-     .text(`Ticket ID: ${ticket._id ? ticket._id.toString().substring(0, 20) : 'N/A'}`, 70, yPos);
+     .text(`Ticket ID: ${ticket._id ? ticket._id.toString().substring(0, 24).toUpperCase() : 'N/A'}`, 
+           leftMargin, yPos);
 
-  // **Important Instructions Box**
+  // **IMPORTANT INSTRUCTIONS BOX**
   yPos = 690;
-  doc.rect(50, yPos, doc.page.width - 100, 120)
-     .fill("#1a1a1a");
+  
+  // Black box with gold border
+  doc.rect(40, yPos, doc.page.width - 80, 110)
+     .lineWidth(3)
+     .strokeColor("#FFD700")
+     .fillAndStroke("#1a1a1a", "#FFD700");
 
-  doc.rect(50, yPos, doc.page.width - 100, 5)
+  // Gold top stripe
+  doc.rect(40, yPos, doc.page.width - 80, 6)
      .fill("#FFD700");
 
   doc.fillColor("#FFD700")
-     .fontSize(16)
+     .fontSize(15)
      .font("Helvetica-Bold")
-     .text("⚠️ IMPORTANT INSTRUCTIONS", 0, yPos + 15, { align: "center", width: doc.page.width });
+     .text("IMPORTANT INSTRUCTIONS", 0, yPos + 18, { align: "center", width: doc.page.width });
 
+  // Instructions text
+  yPos += 45;
   doc.fontSize(10)
      .font("Helvetica")
      .fillColor("#FFFFFF")
-     .text("✓ Bring this ticket (printed or digital) and your student ID", 70, yPos + 45, { width: doc.page.width - 140 })
-     .text("✓ Gates open 5:30 PM • Event starts 6:00 PM sharp", 70, yPos + 65, { width: doc.page.width - 140 })
-     .text("✓ Dress code: Formal/Semi-formal attire recommended", 70, yPos + 85, { width: doc.page.width - 140 });
-
-  // **Footer**
-  yPos = 820;
-  doc.rect(0, yPos, doc.page.width, 2).fill("#FFD700");
+     .text("• Bring this ticket (printed or digital) and your student ID card", 60, yPos, { 
+       width: doc.page.width - 120 
+     });
   
-  doc.fontSize(7)
+  yPos += 20;
+  doc.text("• Gates open at 5:30 PM - Event starts at 6:00 PM sharp", 60, yPos, { 
+    width: doc.page.width - 120 
+  });
+  
+  yPos += 20;
+  doc.text("• Dress code: Formal/Semi-formal attire recommended", 60, yPos, { 
+    width: doc.page.width - 120 
+  });
+
+  // **FOOTER**
+  yPos = 815;
+  
+  // Gold separator line
+  doc.rect(40, yPos, doc.page.width - 80, 3).fill("#FFD700");
+  
+  // Contact information
+  doc.fontSize(8)
      .fillColor("#666666")
      .font("Helvetica")
-     .text("For queries contact: Hasnain 0306-5789045 | Zarnish 0340-4555553 | M Asad 0301-6996105 | Usman 0320-0787777", 
-           40, yPos + 10, { align: "center", width: doc.page.width - 80 });
+     .text("For queries contact:", 0, yPos + 10, { align: "center", width: doc.page.width });
+  
+  doc.fontSize(7)
+     .fillColor("#888888")
+     .text("Hasnain 0306-5789045 | Zarnish 0340-4555553 | M Asad 0301-6996105 | Usman 0320-0787777", 
+           50, yPos + 23, { align: "center", width: doc.page.width - 100 });
 
+  // Copyright
   doc.fontSize(7)
      .fillColor("#999999")
      .text("© 2025 Farewell Eve. All rights reserved.", 
-           0, yPos + 25, { align: "center", width: doc.page.width });
+           0, yPos + 38, { align: "center", width: doc.page.width });
 
   doc.end();
 
